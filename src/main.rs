@@ -3,6 +3,7 @@
 
 extern crate getopts;
 extern crate time;
+extern crate byteorder;
 
 use getopts::Options;
 use std::env;
@@ -18,9 +19,9 @@ use std::io::prelude::*;
 use std::io::{self, BufReader};
 use std::path::Path;
 
-enum ToWorkers {
+enum ToWorkers<'a> {
 	Return,
-	NewData(String),
+	NewData(&'a str),
 	Process,
 }
 
@@ -45,6 +46,36 @@ fn print_usage(program: &str, opts: Options) {
     let brief = format!("Usage: {} FILE [options]", program);
     print!("{}", opts.usage(&brief));
 }
+
+fn bytearr_to_int64(slice: &[u8]) -> u64 {
+use std::cmp;
+use byteorder::ByteOrder;
+
+	
+	// If lengths mismatch, add leading zeros or omit parts of input
+	if slice.len() != 8 {
+		let mut arr : [u8; 8] = [0; 8];
+		let offset = cmp::max(8-slice.len(), 0);
+		for i in 0..cmp::min(8, slice.len()) {
+			arr[i+offset] = slice[i];
+		}
+		return byteorder::BigEndian::read_u64(&arr);
+	}
+	
+	// Transmute to int according to Bigendian byteorder (for comparison)
+	return byteorder::BigEndian::read_u64(&slice);
+
+}
+
+fn int64_to_bytearr(input : u64) -> [u8; 8] {
+use byteorder::ByteOrder;
+	let mut arr : [u8; 8] = [0; 8];
+	
+	// Transmute to bytes 
+	byteorder::BigEndian::write_u64(&mut arr, input);
+	arr
+}
+
 
 fn main() {
 	let start = time::now();
@@ -97,7 +128,7 @@ fn main() {
 		// Sort after finished variant
 		// Fucking damn lot faster O.o
 		thread::spawn(move || {
-			let mut stored : Vec<String> = Vec::new();
+			let mut stored : Vec<&str> = Vec::new();
 			let mut sorted = true;
 			while let Ok(msg) = rx.recv() {
 				match msg {
@@ -178,14 +209,16 @@ fn main() {
     };
     
 	// Read File and send to buckets
-    let file = BufReader::new(file);
-    for line in file.lines() {
+    let file = BufReader::new(file).lines();
+    for line in file {
 		let line = line.unwrap();
 		if(line.is_empty()) {continue;}
 		
-		let bucket = chooseBucketSimple(threads.len(), line.as_bytes()[0]);
+		let byteline = line.as_bytes();
+		
+		let bucket = chooseBucketSimple(threads.len(), byteline[0]);
 		if bucket >= 0 && bucket < threads.len() {
-			threads[bucket].send(ToWorkers::NewData(line));
+			//threads[bucket].send(ToWorkers::NewData(line.as_ref()));
 		} else {
 			panic!("Index out of bound: {}", bucket);
 		}

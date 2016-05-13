@@ -6,6 +6,7 @@ authors = ["Nico <Nico.Westerbeck@mailbox.tu-dresden.de>"]
 [dependencies]
 getopts = "0.2"
 time = "0.1"
+byteorder = "0.5"
 
 clippy = {version = "*", optional = true}
 
