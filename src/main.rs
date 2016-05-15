@@ -11,35 +11,29 @@ use std::env;
 use std::sync::mpsc::{Sender, Receiver};
 use std::sync::mpsc;
 use std::thread;
-use std::collections::LinkedList;
+use std::sync::{Arc, Mutex};
 
 use std::error::Error;
 use std::fs::File;
 use std::io::prelude::*;
-use std::io::{self, BufReader};
 use std::path::Path;
 
-enum ToWorkers<'a> {
-	Return,
-	NewData(&'a str),
-	Process,
-}
+const OUTPUT_TIMES : bool = true;
+const MIN_ENTRY : u64 = 9325100404908321;
+const MAX_ENTRY : u64 = 35604928818740863;
+// Generated like that:
+/*	let MIN_ENTRY : u64 = bytearr_to_int64(&[0x21u8, 0x21u8, 0x21u8, 0x21u8, 0x21u8, 0x21u8, 0x21u8]);
+	let MAX_ENTRY : u64 = bytearr_to_int64(&[0x7Eu8, 0x7Eu8, 0x7Eu8, 0x7Eu8, 0x7Eu8, 0x7Eu8, 0x7Eu8])+1;
+	
+	println!("{}", MIN_ENTRY);
+	println!("{}", MAX_ENTRY);*/
 
-enum FromWorkers {
-	Finished,
-}
+fn choose_bucket(threads: usize, line: u64) -> usize {
+	if line < MIN_ENTRY {return 0;}
+	if line >= MAX_ENTRY {return threads;}
 
-fn chooseBucketSimple(threads: usize, firstchar: u8) -> usize {
-	if firstchar < 33 {return 0;}
-	let mut firstchar = firstchar as f32;
-	firstchar -= 33.0;
-	let retval = (firstchar / 94.0 * (threads as f32)) as usize;
-	if retval >= threads {return threads-1;}
-	retval
-}
-
-fn chooseBucket(threads: usize, line: String) -> usize {
-0
+	// linear distribution
+	(((line - MIN_ENTRY) * (threads as u64)) / (MAX_ENTRY - MIN_ENTRY)) as usize
 }
 
 fn print_usage(program: &str, opts: Options) {
@@ -63,7 +57,7 @@ use byteorder::ByteOrder;
 	}
 	
 	// Transmute to int according to Bigendian byteorder (for comparison)
-	return byteorder::BigEndian::read_u64(&slice);
+	byteorder::BigEndian::read_u64(&slice)
 
 }
 
@@ -85,6 +79,7 @@ fn main() {
 
     let mut opts = Options::new();
     opts.optopt("n", "", "set number of threads", "NUMBER");
+    opts.optopt("o", "", "set output file", "FILE");
     opts.optflag("h", "help", "print this help menu");
     let matches = match opts.parse(&args[1..]) {
         Ok(m) => { m }
@@ -94,7 +89,6 @@ fn main() {
         print_usage(&program, opts);
         return;
     }
-    let output = matches.opt_str("n");
     let input = if !matches.free.is_empty() {
         matches.free[0].clone()
     } else {
@@ -102,98 +96,22 @@ fn main() {
         return;
     };
     
-    let mut NTHREADS = 1;
-    
-    if let Some(output) = output {
-		if let Ok(n) = output.parse::<i32>() {
-			NTHREADS = n;
+    let mut nthreads : usize = 1;
+	let param = matches.opt_str("n");
+    if let Some(param) = param {
+		if let Ok(n) = param.parse::<usize>() {
+			nthreads = n;
 		}
     }
-
-    let NTHREADS = NTHREADS;
-
-    // Create communication channels to and from the buckets
-    let mut threads : Vec<Sender<ToWorkers>> = Vec::new();
-    let (restx, resrx) = mpsc::channel();
-
-    // Create NTHREAD buckets
-    for id in 0..NTHREADS {
-		// Create a channel for this bucket to send data and instructions
-        let (tx, rx) = mpsc::channel();
-		threads.push(tx);
-		
-		// Clone the result channel
-		let cloned_restx = restx.clone();
-		
-		// Sort after finished variant
-		// Fucking damn lot faster O.o
-		thread::spawn(move || {
-			let mut stored : Vec<&str> = Vec::new();
-			let mut sorted = true;
-			while let Ok(msg) = rx.recv() {
-				match msg {
-					ToWorkers::NewData(data) => {stored.push(data); sorted=false;},
-					ToWorkers::Process => {stored.sort(); sorted=true;},
-					ToWorkers::Return => {
-						if(!sorted) {stored.sort();}
-
-						//println!("Thread {} stored {} items", id, stored.len());
-						
-						for item in &stored {
-							//println!("{}", item);
-						}
-		
-						break;
-					},
-				}
-			}
-			cloned_restx.send(FromWorkers::Finished);
-
-		});
-
-		// Insertion sort variant
-		/*
-        thread::spawn(move || {
-			let mut stored : LinkedList<String> = LinkedList::new();
-					
-			// Implement insertion sort for new data
-			// Unfortunately Rust does not provide a insert method for their linked lists
-			// Rendering linked lists absolutely unusable.
-			
-			while let Ok(ToWorkers::NewData(data)) = rx.recv() {
-	
-				let mut iter = stored.iter_mut();
-				let mut count = 0;
-				
-				// Loop until the first element is greater
-				loop {
-					{
-						let curitem = match iter.peek_next() {
-							Some(curitem) => curitem,
-							_ => break,
-						};
-	
-						if data < *curitem {
-							break;
-						}
-					}
-					iter.next();
-					count+=1;
-				}
-				iter.insert_next(data);
-			}
-			
-			//println!("Thread {} stored {:?}", id, stored);
-			
-			for item in &stored {
-				println!("{}", item);
-			}
-			
-			cloned_restx.send(FromWorkers::Finished);
-        });*/
-    }
+    let nthreads = nthreads;
     
-    println!("{} - Start reading files", time::now() - start);
+    let param = matches.opt_str("o");
+    let output = if let Some(param) = param {
+		param.clone()
+    } else {String::from("output")};
+    
+    
+    if OUTPUT_TIMES {println!("{} - Start reading files", time::now() - start);}
    
     // Read the file input
     let path = Path::new(&input);
@@ -208,40 +126,96 @@ fn main() {
         Ok(file) => file,
     };
     
+    let mut buckets  = vec![Vec::<u64>::new(); nthreads];
+
 	// Read File and send to buckets
-    let file = BufReader::new(file).lines();
-    for line in file {
-		let line = line.unwrap();
-		if(line.is_empty()) {continue;}
-		
-		let byteline = line.as_bytes();
-		
-		let bucket = chooseBucketSimple(threads.len(), byteline[0]);
-		if bucket >= 0 && bucket < threads.len() {
-			//threads[bucket].send(ToWorkers::NewData(line.as_ref()));
+	let mut contents = String::new();
+	if let Err(why) = file.read_to_string(&mut contents) {
+		panic!("could not read file: {}", Error::description(&why));
+	}
+	
+	
+	if OUTPUT_TIMES {println!("{} - Converting to u64", time::now() - start);}
+	
+	
+	let contents = contents;
+	
+	for line in contents.lines() {
+		if line.is_empty() {continue;}
+		let line = bytearr_to_int64(line.as_bytes());
+		let bucket = choose_bucket(nthreads, line);
+
+		if /*bucket >= 0 &&*/ bucket < nthreads {
+			buckets[bucket].push(line);
 		} else {
 			panic!("Index out of bound: {}", bucket);
 		}
 	}
 
 	    
-	println!("{} - Start processing", time::now() - start);
+	if OUTPUT_TIMES {println!("{} - Start processing", time::now() - start);}
 
-    
-    // Start Processing
-    for item in &threads {
-		item.send(ToWorkers::Process);
+	// Communicate through channels
+	//let mut threads : Vec<Sender<Box<File>>> = Vec::new();
+	let mut threads = Vec::new();
+	let (restx, resrx) = mpsc::channel();
+	
+    for i in 0..nthreads {
+		let (tx, rx) : (Sender<Arc<Mutex<File>>>, Receiver<Arc<Mutex<File>>>) = mpsc::channel();
+		threads.push(tx);
+		
+		// Clone the result channel
+		let cloned_restx = restx.clone();
+		let mut threadbucket = buckets.pop().unwrap();
+		thread::spawn(move || {
+			let mut output = String::new();
+			
+			//output.push_str(format!("----------Thread {} \n", i).as_str());
+			let sortstart = time::now();
+			threadbucket.sort();
+			let parsestart = time::now();
+			for item in &threadbucket {
+				let bytes = &int64_to_bytearr(*item)[1..];
+				
+				output.push_str(String::from_utf8_lossy(bytes).to_mut());
+				output.push_str("\n");
+			}
+			let parseend = time::now();
+			//output.push_str(format!("----------Thread {} end\n", i).as_str());
+
+			let output = output;
+			
+			let pointer = rx.recv().unwrap();
+			let writestart = time::now();
+
+			let mut file = pointer.lock().unwrap();
+			file.write(output.as_bytes()).expect("could not write to file");
+			let now = time::now();
+			if OUTPUT_TIMES {println!("Thread {} load: {} items (sort - {}, parse - {}, write - {})", i, threadbucket.len(), parsestart-sortstart, parseend-parsestart, now-writestart);}
+			
+			cloned_restx.send(()).expect("sending to main thread failed");
+		});
     }
-    
-	println!("{} - Start gathering results", time::now() - start);
+    threads.reverse();
+	if OUTPUT_TIMES {println!("{} - Start gathering results", time::now() - start);}
 
+	let path = Path::new(&output);
+    let display = path.display();
+	// Open the path in read-only mode, returns `io::Result<File>`
+    let file = Arc::new(Mutex::new(match File::create(&path) {
+        // The `description` method of `io::Error` returns a string that
+        // describes the error
+        Err(why) => panic!("couldn't open {}: {}", display,
+                                                   Error::description(&why)),
+		Ok(file) => file,
+    }));
     
     // Gather results
     for item in &threads {
-		item.send(ToWorkers::Return);
-		resrx.recv();
+		item.send(file.clone()).expect("send to thread failed");
+		resrx.recv().expect("receive from thread failed");
     }
     
-	println!("{} - Finished", time::now() - start);
-
+	if OUTPUT_TIMES {println!("{} - Finished", time::now() - start);}
+	
 }
