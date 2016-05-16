@@ -1,0 +1,66 @@
+-----
+Number of threads = 1
+PT0.000206705S - Start reading files
+PT1.815112139S - Converting to u64
+PT5.150188351S - Start processing
+PT5.150429606S - Start gathering results
+Thread 0 load: 100000000 items (sort - PT12.210543118S, parse - PT6.866652897S, write - PT1.923744263S)
+PT26.151681851S - Finished
+-----
+Number of threads = 2
+PT0.000062719S - Start reading files
+PT1.216717163S - Converting to u64
+PT4.589193689S - Start processing
+PT4.589442915S - Start gathering results
+Thread 0 load: 50532293 items (sort - PT6.676003330S, parse - PT3.788898922S, write - PT0.259333582S)
+Thread 1 load: 49467707 items (sort - PT6.540669304S, parse - PT3.751417336S, write - PT1.385224189S)
+PT16.700487633S - Finished
+-----
+Number of threads = 4
+PT0.000037245S - Start reading files
+PT1.188478346S - Converting to u64
+PT4.594816192S - Start processing
+PT4.595098570S - Start gathering results
+Thread 0 load: 25743971 items (sort - PT3.896425936S, parse - PT3.453981376S, write - PT0.103490371S)
+Thread 1 load: 24788322 items (sort - PT3.922880744S, parse - PT3.343976561S, write - PT0.098213703S)
+Thread 2 load: 24800897 items (sort - PT4.246768632S, parse - PT3.146585353S, write - PT0.895197996S)
+Thread 3 load: 24666810 items (sort - PT3.778759928S, parse - PT3.389791221S, write - PT0.505278658S)
+PT13.550948249S - Finished
+-----
+Number of threads = 8
+PT0.000035099S - Start reading files
+PT1.200437463S - Converting to u64
+PT4.588907030S - Start processing
+PT4.592611697S - Start gathering results
+Thread 0 load: 12901522 items (sort - PT3.909078760S, parse - PT3.103924755S, write - PT0.079924013S)
+Thread 1 load: 12842449 items (sort - PT3.916407959S, parse - PT3.351267378S, write - PT0.055194243S)
+Thread 2 load: 11920247 items (sort - PT3.465730109S, parse - PT2.952899315S, write - PT0.121880935S)
+Thread 3 load: 12868075 items (sort - PT4.418350627S, parse - PT3.125096257S, write - PT0.056321050S)
+Thread 4 load: 12879738 items (sort - PT3.327017053S, parse - PT3.709729834S, write - PT0.417438700S)
+Thread 5 load: 11921159 items (sort - PT3.703123294S, parse - PT3.428975439S, write - PT0.568104393S)
+Thread 6 load: 12837684 items (sort - PT4.087957857S, parse - PT3.237270590S, write - PT0.050081254S)
+Thread 7 load: 11829126 items (sort - PT3.081746603S, parse - PT3.493262373S, write - PT0.297440064S)
+PT13.534708894S - Finished
+-----
+Number of threads = 16
+PT0.000033706S - Start reading files
+PT1.171370426S - Converting to u64
+PT4.574864717S - Start processing
+PT4.620856298S - Start gathering results
+Thread 0 load: 6451337 items (sort - PT3.765505071S, parse - PT2.913473987S, write - PT0.063331371S)
+Thread 1 load: 6450185 items (sort - PT3.962712272S, parse - PT2.915536471S, write - PT0.025355944S)
+Thread 2 load: 6451176 items (sort - PT3.769969566S, parse - PT3.005629319S, write - PT0.025472675S)
+Thread 3 load: 6391273 items (sort - PT4.003810724S, parse - PT2.859478946S, write - PT0.024164613S)
+Thread 4 load: 5960613 items (sort - PT3.423216162S, parse - PT3.005099825S, write - PT0.022513671S)
+Thread 5 load: 5959634 items (sort - PT3.438105864S, parse - PT3.016553486S, write - PT0.243862993S)
+Thread 6 load: 6414864 items (sort - PT4.026514059S, parse - PT2.868425052S, write - PT0.107545931S)
+Thread 7 load: 6453211 items (sort - PT3.739334006S, parse - PT2.987501874S, write - PT0.026993191S)
+Thread 8 load: 6451045 items (sort - PT3.364868238S, parse - PT3.215726012S, write - PT0.248835218S)
+Thread 9 load: 6428693 items (sort - PT3.678573543S, parse - PT3.127092858S, write - PT0.027406556S)
+Thread 10 load: 5962638 items (sort - PT2.914539526S, parse - PT3.166123896S, write - PT0.365343023S)
+Thread 11 load: 5958521 items (sort - PT3.074407847S, parse - PT3.093218823S, write - PT0.023397515S)
+Thread 12 load: 6381127 items (sort - PT3.573835298S, parse - PT3.080429987S, write - PT0.025892963S)
+Thread 13 load: 6456557 items (sort - PT3.736800097S, parse - PT3.070207838S, write - PT0.854420945S)
+Thread 14 load: 6451561 items (sort - PT3.863815344S, parse - PT3.044052575S, write - PT0.666737810S)
+Thread 15 load: 5377565 items (sort - PT3.113139585S, parse - PT2.918057593S, write - PT0.028544586S)
+PT14.243529519S - Finished

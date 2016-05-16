@@ -1,6 +1,3 @@
-// Necessary for insertion sort variant
-//#![feature(linked_list_extras)]
-
 extern crate getopts;
 extern crate time;
 extern crate byteorder;
@@ -33,6 +30,7 @@ fn choose_bucket(threads: usize, line: u64) -> usize {
 	if line >= MAX_ENTRY {return threads;}
 
 	// linear distribution
+	// TODO take some load off the first buckets so they can write early
 	(((line - MIN_ENTRY) * (threads as u64)) / (MAX_ENTRY - MIN_ENTRY)) as usize
 }
 
@@ -160,7 +158,7 @@ fn main() {
 	let mut threads = Vec::new();
 	let (restx, resrx) = mpsc::channel();
 	
-    for i in 0..nthreads {
+    for i in (0..nthreads).rev() {
 		let (tx, rx) : (Sender<Arc<Mutex<File>>>, Receiver<Arc<Mutex<File>>>) = mpsc::channel();
 		threads.push(tx);
 		
@@ -168,7 +166,7 @@ fn main() {
 		let cloned_restx = restx.clone();
 		let mut threadbucket = buckets.pop().unwrap();
 		thread::spawn(move || {
-			let mut output = String::new();
+			let mut output = String::with_capacity(threadbucket.len()*8);
 			
 			//output.push_str(format!("----------Thread {} \n", i).as_str());
 			let sortstart = time::now();
