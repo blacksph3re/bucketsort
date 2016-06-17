@@ -16,5 +16,4 @@ $(EXEC): $(SRC)
 	$(CC) $(FLAGS) $^ -o $@
 
 run:
-	./$(EXEC) input/medium.in input/medium.out
-
+	./$(EXEC) ../input output

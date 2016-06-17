@@ -11,6 +11,7 @@ int main() {
 	std::srand(std::time(0));
 	std::ofstream file;
 	file.open("input");
+	file << NUM_LINES << '\n';
 	for(long i = 0; i < NUM_LINES; i++)
 	{
 		for(int j = 0; j < 7; j++)

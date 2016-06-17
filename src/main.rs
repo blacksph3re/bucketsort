@@ -148,8 +148,9 @@ fn main() {
 	if OUTPUT_TIMES {println!("{} - Converting to u64", time::now() - start);}
 	let mut buckets  = vec![Vec::<u64>::new(); nthreads]; 
 
-		
+	let startpos = contents.find('\n').unwrap();
 	let contents = unsafe {contents.as_mut_vec()};
+	let (_, contents) = contents.split_at(startpos+1);
 	{
 		let lines : Vec<&[u8]> = contents.chunks(8).collect(); // assume 1 byte line endings
 		
