@@ -9,7 +9,7 @@ makeinput:
 	./makeinput
 	rm makeinput
 run:
-	target/release/bucketsort input -o output
+	target/release/bucketsort input -n 2 -o output
 	
 scalingtest:
 	sh run.sh

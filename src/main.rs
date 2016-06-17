@@ -1,6 +1,7 @@
 extern crate getopts;
 extern crate time;
 extern crate byteorder;
+extern crate crossbeam;
 
 use getopts::Options;
 use std::env;
@@ -145,26 +146,50 @@ fn main() {
 	
 	
 	if OUTPUT_TIMES {println!("{} - Converting to u64", time::now() - start);}
-	let mut buckets  = vec![Vec::<u64>::with_capacity(contents.len()/6/nthreads); nthreads];  // Only divide by 6 to have some extra capacity to avoid full vector copies
+	let mut buckets  = vec![Vec::<u64>::new(); nthreads]; 
 
-	
-	let contents = contents;
-	
-	// Idea: do this parallel?
-	// Buckets would have to be seperated and joined then.
-	for line in contents.lines() {
-		if line.is_empty() {continue;}
-		let line = bytearr_to_int64(line.as_bytes());
-		let bucket = choose_bucket(nthreads, line);
+		
+	let contents = unsafe {contents.as_mut_vec()};
+	{
+		let lines : Vec<&[u8]> = contents.chunks(8).collect(); // assume 1 byte line endings
+		
+		crossbeam::scope(|scope| {
+			//let mut worker_threads = Vec::new();
+			// Idea: do this parallel
+			// Buckets have to be seperated and joined later.
+			// Split the lines in chunks and spawn a thread for each chunk, then save all those threads in a vec
+			let mut worker_threads = Vec::new();
+			for linechunk in lines.chunks(lines.len()/nthreads + 1) {
+				worker_threads.push(scope.spawn(move || {
+					let mut localbuckets = vec![Vec::<u64>::new(); nthreads];
+					for line in linechunk.iter() {
+						let line = String::from_utf8_lossy(line);
+						let line = bytearr_to_int64(line.trim().as_bytes());
+						let bucket = choose_bucket(nthreads, line);
 
-		if /*bucket >= 0 &&*/ bucket < nthreads {
-			buckets[bucket].push(line);
-		} else {
-			panic!("Index out of bound: {}", bucket);
-		}
+						if /*bucket >= 0 &&*/ bucket < nthreads {
+							localbuckets[bucket].push(line);
+						} else {
+							panic!("Index out of bound: {}", bucket);
+						}
+					}
+					return localbuckets;
+				}));
+			}
+							
+			// Join all threads
+			for worker in worker_threads {
+				let localbuckets = worker.join();	
+				for i in 0..nthreads {
+					buckets[i].extend_from_slice(localbuckets[i].as_slice());
+				}
+			}
+			
+		
+
+		});
 	}
-
-	    
+	
 	if OUTPUT_TIMES {println!("{} - Start processing", time::now() - start);}
 
 	// Communicate through channels
@@ -209,6 +234,9 @@ fn main() {
     threads.reverse();
 	if OUTPUT_TIMES {println!("{} - Start gathering results", time::now() - start);}
 
+	// Make some space for threads
+	drop(contents);
+	
 	let path = Path::new(&output);
     let display = path.display();
 	// Open the path in read-only mode, returns `io::Result<File>`
@@ -225,7 +253,6 @@ fn main() {
 		item.send(file.clone()).expect("send to thread failed");
 		resrx.recv().expect("receive from thread failed");
     }
-    drop(file);
 	if OUTPUT_TIMES {println!("{} - Finished", time::now() - start);}
 	
 }
