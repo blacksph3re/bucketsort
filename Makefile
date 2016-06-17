@@ -11,5 +11,5 @@ makeinput:
 run:
 	target/release/bucketsort input -o output
 	
-runpar:
+scalingtest:
 	sh run.sh

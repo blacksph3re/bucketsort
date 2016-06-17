@@ -1,0 +1,191 @@
+-----
+Number of threads = 1
+PT0.000092771S - Start reading files
+PT2.601615604S - Converting to u64
+PT8.108589365S - Start processing
+PT8.109646258S - Start gathering results
+Thread 0 load: 100000000 items (sort - PT17.486027982S, parse - PT8.675999306S, write - PT1.660914875S)
+PT35.933568273S - Finished
+30.27user 5.09system 0:35.99elapsed 98%CPU (0avgtext+0avgdata 3135408maxresident)k
+0inputs+1562504outputs (0major+406437minor)pagefaults 0swaps
+-----
+Number of threads = 2
+PT0.000092389S - Start reading files
+PT2.605644570S - Converting to u64
+PT8.071779673S - Start processing
+PT8.072890530S - Start gathering results
+Thread 0 load: 50543575 items (sort - PT10.204699148S, parse - PT4.444510942S, write - PT0.581619066S)
+Thread 1 load: 49456425 items (sort - PT10.045377109S, parse - PT4.318457363S, write - PT0.610257681S)
+PT23.917136470S - Finished
+33.10user 5.49system 0:33.83elapsed 114%CPU (0avgtext+0avgdata 3400432maxresident)k
+32inputs+1566088outputs (0major+339180minor)pagefaults 0swaps
+-----
+Number of threads = 4
+PT0.000088157S - Start reading files
+PT2.602654078S - Converting to u64
+PT7.915415509S - Start processing
+PT7.918458688S - Start gathering results
+Thread 0 load: 25747709 items (sort - PT8.344760404S, parse - PT2.151164399S, write - PT0.300844507S)
+Thread 1 load: 24795866 items (sort - PT8.598447925S, parse - PT2.083750456S, write - PT0.284826816S)
+Thread 2 load: 24795158 items (sort - PT8.527285195S, parse - PT2.081766230S, write - PT0.324423318S)
+Thread 3 load: 24661267 items (sort - PT8.161228336S, parse - PT2.071034671S, write - PT1.846254252S)
+PT21.178946428S - Finished
+45.60user 5.83system 0:30.09elapsed 170%CPU (0avgtext+0avgdata 3281704maxresident)k
+16inputs+1562504outputs (0major+31099minor)pagefaults 0swaps
+-----
+Number of threads = 8
+PT0.000088819S - Start reading files
+PT2.594082410S - Converting to u64
+PT7.903961154S - Start processing
+PT7.921917151S - Start gathering results
+Thread 0 load: 12907671 items (sort - PT7.387551457S, parse - PT1.101266108S, write - PT0.158060263S)
+Thread 1 load: 12840038 items (sort - PT7.534414540S, parse - PT1.086489263S, write - PT0.147430599S)
+Thread 2 load: 11923938 items (sort - PT6.919180661S, parse - PT1.077285028S, write - PT0.137629833S)
+Thread 3 load: 12871928 items (sort - PT7.340021267S, parse - PT1.087854622S, write - PT0.147479156S)
+Thread 4 load: 12871664 items (sort - PT7.487789889S, parse - PT1.095156523S, write - PT0.147093150S)
+Thread 5 load: 11923494 items (sort - PT6.945329306S, parse - PT1.072305982S, write - PT0.137268374S)
+Thread 6 load: 12829038 items (sort - PT7.308282514S, parse - PT1.084880914S, write - PT0.188867102S)
+Thread 7 load: 11832229 items (sort - PT6.956082487S, parse - PT1.085286394S, write - PT0.136408171S)
+PT17.639261096S - Finished
+70.06user 5.73system 0:28.50elapsed 265%CPU (0avgtext+0avgdata 3391568maxresident)k
+72inputs+1562504outputs (0major+58940minor)pagefaults 0swaps
+-----
+Number of threads = 16
+PT0.000091493S - Start reading files
+PT2.594026466S - Converting to u64
+PT7.867665407S - Start processing
+PT8.006640912S - Start gathering results
+Thread 0 load: 6454037 items (sort - PT7.189394500S, parse - PT0.650560970S, write - PT0.086396754S)
+Thread 1 load: 6453634 items (sort - PT7.208615404S, parse - PT0.680974626S, write - PT0.075447920S)
+Thread 2 load: 6450139 items (sort - PT6.897959691S, parse - PT0.812955205S, write - PT0.074562398S)
+Thread 3 load: 6389899 items (sort - PT6.984029644S, parse - PT0.786026036S, write - PT0.073633810S)
+Thread 4 load: 5960904 items (sort - PT6.767928299S, parse - PT0.910405730S, write - PT0.068799263S)
+Thread 5 load: 5963034 items (sort - PT6.684198985S, parse - PT1.057093789S, write - PT0.069049523S)
+Thread 6 load: 6416718 items (sort - PT7.243238499S, parse - PT0.850106930S, write - PT0.074022403S)
+Thread 7 load: 6455210 items (sort - PT7.261677761S, parse - PT0.813252288S, write - PT0.075279100S)
+Thread 8 load: 6446144 items (sort - PT7.338112615S, parse - PT0.809407907S, write - PT0.074689575S)
+Thread 9 load: 6425520 items (sort - PT6.787055977S, parse - PT1.072588902S, write - PT0.073604914S)
+Thread 10 load: 5963164 items (sort - PT6.424472270S, parse - PT1.053227328S, write - PT0.068429462S)
+Thread 11 load: 5960330 items (sort - PT6.513834968S, parse - PT0.913100734S, write - PT0.068325809S)
+Thread 12 load: 6376442 items (sort - PT6.973052948S, parse - PT0.946970988S, write - PT0.115763561S)
+Thread 13 load: 6452596 items (sort - PT7.287288882S, parse - PT0.838795503S, write - PT0.371861531S)
+Thread 14 load: 6454544 items (sort - PT7.315183153S, parse - PT0.827642845S, write - PT0.075836319S)
+Thread 15 load: 5377685 items (sort - PT5.972815693S, parse - PT1.021415001S, write - PT0.062069800S)
+PT17.441754871S - Finished
+67.17user 6.56system 0:28.20elapsed 261%CPU (0avgtext+0avgdata 3468596maxresident)k
+40inputs+1562504outputs (0major+69082minor)pagefaults 0swaps
+-----
+Number of threads = 32
+PT0.000088830S - Start reading files
+PT2.584005435S - Converting to u64
+PT8.577819624S - Start processing
+PT9.455789714S - Start gathering results
+Thread 0 load: 3225923 items (sort - PT6.233041724S, parse - PT0.478703379S, write - PT0.044941220S)
+Thread 1 load: 3228114 items (sort - PT6.289962216S, parse - PT0.444585027S, write - PT0.038161236S)
+Thread 2 load: 3225747 items (sort - PT6.326220930S, parse - PT0.414588952S, write - PT0.037907438S)
+Thread 3 load: 3227887 items (sort - PT6.308859333S, parse - PT0.481022800S, write - PT0.038207251S)
+Thread 4 load: 3223873 items (sort - PT6.379064411S, parse - PT0.336259005S, write - PT0.038095890S)
+Thread 5 load: 3226266 items (sort - PT6.011416554S, parse - PT0.491058899S, write - PT0.089615652S)
+Thread 6 load: 3224685 items (sort - PT6.417686196S, parse - PT0.378899362S, write - PT0.038923388S)
+Thread 7 load: 3165214 items (sort - PT6.447626942S, parse - PT0.405143644S, write - PT0.037490311S)
+Thread 8 load: 2981772 items (sort - PT5.640658206S, parse - PT0.792346532S, write - PT0.035138331S)
+Thread 9 load: 2979132 items (sort - PT5.733313410S, parse - PT0.766206010S, write - PT0.035246782S)
+Thread 10 load: 2981888 items (sort - PT6.510642589S, parse - PT0.527860811S, write - PT0.034676238S)
+Thread 11 load: 2981146 items (sort - PT6.461203678S, parse - PT0.438472842S, write - PT0.034764470S)
+Thread 12 load: 3189955 items (sort - PT6.666658002S, parse - PT0.460046782S, write - PT0.037287762S)
+Thread 13 load: 3226763 items (sort - PT6.510295446S, parse - PT0.706794657S, write - PT0.037865509S)
+Thread 14 load: 3228059 items (sort - PT6.774104648S, parse - PT0.588666726S, write - PT0.037873765S)
+Thread 15 load: 3227151 items (sort - PT6.322290263S, parse - PT0.894696909S, write - PT0.038976060S)
+Thread 16 load: 3222733 items (sort - PT6.164328014S, parse - PT0.732841696S, write - PT0.037633181S)
+Thread 17 load: 3223411 items (sort - PT6.637301555S, parse - PT0.748319716S, write - PT0.037912875S)
+Thread 18 load: 3224475 items (sort - PT6.307014627S, parse - PT0.771047077S, write - PT0.037889780S)
+Thread 19 load: 3201045 items (sort - PT6.714531868S, parse - PT0.709055287S, write - PT0.037269202S)
+Thread 20 load: 2982040 items (sort - PT6.070691S, parse - PT0.970122362S, write - PT0.034472029S)
+Thread 21 load: 2981124 items (sort - PT6.149787388S, parse - PT0.932992615S, write - PT0.034991591S)
+Thread 22 load: 2982360 items (sort - PT5.998635132S, parse - PT0.999554873S, write - PT0.034595569S)
+Thread 23 load: 2977970 items (sort - PT5.810662967S, parse - PT1.048421953S, write - PT0.035218996S)
+Thread 24 load: 3152311 items (sort - PT5.641164515S, parse - PT1.010521851S, write - PT0.036333781S)
+Thread 25 load: 3224131 items (sort - PT4.849854869S, parse - PT1.255722909S, write - PT0.037695871S)
+Thread 26 load: 3225840 items (sort - PT5.249695556S, parse - PT1.114609604S, write - PT0.037274294S)
+Thread 27 load: 3226756 items (sort - PT6.011962846S, parse - PT1.052635489S, write - PT0.038168483S)
+Thread 28 load: 3228508 items (sort - PT5.484415445S, parse - PT1.224024879S, write - PT0.038836119S)
+Thread 29 load: 3226036 items (sort - PT5.054865496S, parse - PT1.238885112S, write - PT0.037773129S)
+Thread 30 load: 3225481 items (sort - PT4.965115779S, parse - PT1.299782715S, write - PT0.623558121S)
+Thread 31 load: 2152204 items (sort - PT1.179066303S, parse - PT0.935510774S, write - PT0.025314896S)
+PT18.006274355S - Finished
+62.82user 7.76system 0:27.74elapsed 254%CPU (0avgtext+0avgdata 3504472maxresident)k
+16inputs+1562504outputs (0major+120873minor)pagefaults 0swaps
+-----
+Number of threads = 64
+PT0.000091276S - Start reading files
+PT2.588819236S - Converting to u64
+PT9.075814210S - Start processing
+PT10.847572960S - Start gathering results
+Thread 0 load: 2151699 items (sort - PT5.383087756S, parse - PT0.182069171S, write - PT0.026584307S)
+Thread 1 load: 1074224 items (sort - PT3.707962335S, parse - PT0.570980330S, write - PT0.012824966S)
+Thread 2 load: 2152812 items (sort - PT5.294496268S, parse - PT0.200984991S, write - PT0.025266636S)
+Thread 3 load: 1075302 items (sort - PT3.724473029S, parse - PT0.544413309S, write - PT0.012733897S)
+Thread 4 load: 1951936 items (sort - PT5.166133311S, parse - PT0.264314588S, write - PT0.023033871S)
+Thread 5 load: 1273811 items (sort - PT4.083071164S, parse - PT0.504722165S, write - PT0.015072115S)
+Thread 6 load: 1707695 items (sort - PT5.008730685S, parse - PT0.193250286S, write - PT0.020974225S)
+Thread 7 load: 1520192 items (sort - PT4.878100030S, parse - PT0.429833706S, write - PT0.017914730S)
+Thread 8 load: 1461788 items (sort - PT4.207547069S, parse - PT0.445644160S, write - PT0.016986265S)
+Thread 9 load: 1762085 items (sort - PT5.076747252S, parse - PT0.349907694S, write - PT0.020895608S)
+Thread 10 load: 1216074 items (sort - PT4.257623522S, parse - PT0.313435S, write - PT0.014383524S)
+Thread 11 load: 2010192 items (sort - PT5.352738792S, parse - PT0.172655855S, write - PT0.023772587S)
+Thread 12 load: 1076028 items (sort - PT3.891227047S, parse - PT0.459843839S, write - PT0.012550108S)
+Thread 13 load: 2148657 items (sort - PT5.407563553S, parse - PT0.182875826S, write - PT0.025320376S)
+Thread 14 load: 1074669 items (sort - PT3.670063286S, parse - PT0.525696324S, write - PT0.012850587S)
+Thread 15 load: 2090545 items (sort - PT5.333936209S, parse - PT0.205985119S, write - PT0.024412801S)
+Thread 16 load: 1133536 items (sort - PT4.240581935S, parse - PT0.453103521S, write - PT0.013270717S)
+Thread 17 load: 1848236 items (sort - PT4.716643706S, parse - PT0.376792027S, write - PT0.021487184S)
+Thread 18 load: 1377906 items (sort - PT4.781098215S, parse - PT0.318076441S, write - PT0.015886128S)
+Thread 19 load: 1601226 items (sort - PT4.948258798S, parse - PT0.455337145S, write - PT0.018550133S)
+Thread 20 load: 1626137 items (sort - PT4.943434783S, parse - PT0.426548759S, write - PT0.019059035S)
+Thread 21 load: 1355751 items (sort - PT4.414618127S, parse - PT0.514496059S, write - PT0.015997659S)
+Thread 22 load: 1869815 items (sort - PT5.219592678S, parse - PT0.294614694S, write - PT0.021770806S)
+Thread 23 load: 1111331 items (sort - PT3.869362276S, parse - PT0.578549075S, write - PT0.013150609S)
+Thread 24 load: 2115019 items (sort - PT5.409705492S, parse - PT0.300208034S, write - PT0.024583281S)
+Thread 25 load: 1074936 items (sort - PT3.864386707S, parse - PT0.675341744S, write - PT0.012362472S)
+Thread 26 load: 2151677 items (sort - PT5.370764901S, parse - PT0.198140966S, write - PT0.025018020S)
+Thread 27 load: 1075086 items (sort - PT3.715067878S, parse - PT0.611771636S, write - PT0.012636256S)
+Thread 28 load: 1989565 items (sort - PT5.396526036S, parse - PT0.400196014S, write - PT0.023368796S)
+Thread 29 load: 1238494 items (sort - PT3.893857040S, parse - PT0.663272301S, write - PT0.014497372S)
+Thread 30 load: 1742579 items (sort - PT5.255756795S, parse - PT0.607360908S, write - PT0.020091262S)
+Thread 31 load: 1484572 items (sort - PT4.709551415S, parse - PT0.630644786S, write - PT0.017284582S)
+Thread 32 load: 1493946 items (sort - PT3.852452337S, parse - PT0.760083224S, write - PT0.017185808S)
+Thread 33 load: 1728787 items (sort - PT5.329159522S, parse - PT0.448080181S, write - PT0.020076250S)
+Thread 34 load: 1251336 items (sort - PT3.808869170S, parse - PT0.778662439S, write - PT0.014671131S)
+Thread 35 load: 1972075 items (sort - PT5.563684640S, parse - PT0.579899745S, write - PT0.023020101S)
+Thread 36 load: 1076798 items (sort - PT3.035196682S, parse - PT0.715533571S, write - PT0.012654224S)
+Thread 37 load: 2147677 items (sort - PT5.877908720S, parse - PT0.490580700S, write - PT0.025079251S)
+Thread 38 load: 1075018 items (sort - PT3.612809638S, parse - PT0.723960961S, write - PT0.012657177S)
+Thread 39 load: 2126027 items (sort - PT6.227537518S, parse - PT0.330039295S, write - PT0.024637794S)
+Thread 40 load: 1100269 items (sort - PT3.289713608S, parse - PT0.816353230S, write - PT0.012767517S)
+Thread 41 load: 1881771 items (sort - PT5.470201579S, parse - PT0.686719849S, write - PT0.021802490S)
+Thread 42 load: 1344201 items (sort - PT3.755721117S, parse - PT0.716421085S, write - PT0.015570121S)
+Thread 43 load: 1636923 items (sort - PT4.021604003S, parse - PT1.149471317S, write - PT0.018803832S)
+Thread 44 load: 1590734 items (sort - PT4.093649675S, parse - PT0.961666420S, write - PT0.018322326S)
+Thread 45 load: 1391626 items (sort - PT3.343902307S, parse - PT0.956694951S, write - PT0.016167173S)
+Thread 46 load: 1833665 items (sort - PT4.888773324S, parse - PT0.879392727S, write - PT0.021020526S)
+Thread 47 load: 1144305 items (sort - PT2.194013525S, parse - PT1.056080708S, write - PT0.013526416S)
+Thread 48 load: 2078524 items (sort - PT5.450216637S, parse - PT1.099070021S, write - PT0.059441176S)
+Thread 49 load: 1073787 items (sort - PT1.955684239S, parse - PT1.017682751S, write - PT0.012703033S)
+Thread 50 load: 2150125 items (sort - PT5.307728131S, parse - PT1.103402211S, write - PT0.025176080S)
+Thread 51 load: 1074006 items (sort - PT2.182269405S, parse - PT1.121288329S, write - PT0.012585107S)
+Thread 52 load: 2023743 items (sort - PT4.946879766S, parse - PT1.009394254S, write - PT0.025367317S)
+Thread 53 load: 1202097 items (sort - PT1.514886809S, parse - PT1.013307124S, write - PT0.014062266S)
+Thread 54 load: 1776816 items (sort - PT4.277427776S, parse - PT1.119393840S, write - PT0.020852916S)
+Thread 55 load: 1449940 items (sort - PT1.955972654S, parse - PT1.156271524S, write - PT0.017159187S)
+Thread 56 load: 1532249 items (sort - PT2.611249158S, parse - PT1.312150882S, write - PT0.018765359S)
+Thread 57 load: 1696259 items (sort - PT3.175866474S, parse - PT1.086556160S, write - PT0.019752085S)
+Thread 58 load: 1285843 items (sort - PT1.508790869S, parse - PT1.221884954S, write - PT0.015215268S)
+Thread 59 load: 1940193 items (sort - PT3.543566574S, parse - PT1.410524074S, write - PT0.022542465S)
+Thread 60 load: 1075830 items (sort - PT0.924278940S, parse - PT0.468521059S, write - PT0.012376455S)
+Thread 61 load: 2149651 items (sort - PT4.478545166S, parse - PT1.511184940S, write - PT0.024871597S)
+Thread 62 load: 1076295 items (sort - PT0.731182941S, parse - PT0.381048305S, write - PT0.012635018S)
+Thread 63 load: 1075909 items (sort - PT0.646721544S, parse - PT0.425391462S, write - PT0.012371754S)
+PT17.668452711S - Finished
+59.97user 8.65system 0:28.00elapsed 245%CPU (0avgtext+0avgdata 3524744maxresident)k
+24inputs+1562504outputs (0major+143611minor)pagefaults 0swaps
+

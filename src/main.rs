@@ -124,7 +124,6 @@ fn main() {
         Ok(file) => file,
     };
     
-    let mut buckets  = vec![Vec::<u64>::new(); nthreads];
 
 	// Read File and send to buckets
 	let mut contents = String::new();
@@ -134,7 +133,8 @@ fn main() {
 	
 	
 	if OUTPUT_TIMES {println!("{} - Converting to u64", time::now() - start);}
-	
+	let mut buckets  = vec![Vec::<u64>::with_capacity(contents.len()/6/nthreads); nthreads];  // Only divide by 6 to have some extra capacity to avoid full vector copies
+
 	
 	let contents = contents;
 	
@@ -154,7 +154,6 @@ fn main() {
 	if OUTPUT_TIMES {println!("{} - Start processing", time::now() - start);}
 
 	// Communicate through channels
-	//let mut threads : Vec<Sender<Box<File>>> = Vec::new();
 	let mut threads = Vec::new();
 	let (restx, resrx) = mpsc::channel();
 	
@@ -168,7 +167,6 @@ fn main() {
 		thread::spawn(move || {
 			let mut output = String::with_capacity(threadbucket.len()*8);
 			
-			//output.push_str(format!("----------Thread {} \n", i).as_str());
 			let sortstart = time::now();
 			threadbucket.sort();
 			let parsestart = time::now();
@@ -179,7 +177,6 @@ fn main() {
 				output.push_str("\n");
 			}
 			let parseend = time::now();
-			//output.push_str(format!("----------Thread {} end\n", i).as_str());
 
 			let output = output;
 			
