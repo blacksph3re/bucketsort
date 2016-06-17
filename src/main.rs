@@ -18,6 +18,7 @@ use std::path::Path;
 const OUTPUT_TIMES : bool = true;
 const MIN_ENTRY : u64 = 9325100404908321;
 const MAX_ENTRY : u64 = 35604928818740863;
+const LINEAR_DISTRIBUTION : bool = false;
 // Generated like that:
 /*	let MIN_ENTRY : u64 = bytearr_to_int64(&[0x21u8, 0x21u8, 0x21u8, 0x21u8, 0x21u8, 0x21u8, 0x21u8]);
 	let MAX_ENTRY : u64 = bytearr_to_int64(&[0x7Eu8, 0x7Eu8, 0x7Eu8, 0x7Eu8, 0x7Eu8, 0x7Eu8, 0x7Eu8])+1;
@@ -31,7 +32,18 @@ fn choose_bucket(threads: usize, line: u64) -> usize {
 
 	// linear distribution
 	// TODO take some load off the first buckets so they can write early
-	(((line - MIN_ENTRY) * (threads as u64)) / (MAX_ENTRY - MIN_ENTRY)) as usize
+	if LINEAR_DISTRIBUTION {
+		return (((line - MIN_ENTRY) * (threads as u64)) / (MAX_ENTRY - MIN_ENTRY)) as usize;
+	} else {
+		let resolution = 500;
+		let tmp: u64  = ((line - MIN_ENTRY) * (resolution as u64)) / (MAX_ENTRY - MIN_ENTRY);
+		let mut bucket: f64 = (tmp as f64) / (resolution as f64);
+		bucket = bucket.powf(0.7) * (threads as f64);
+		if bucket < 0.0 {bucket=0.0;}
+		let mut bucket = bucket as usize;
+		if bucket >= threads {bucket = threads - 1;}
+		return bucket;
+	}
 }
 
 fn print_usage(program: &str, opts: Options) {
@@ -138,6 +150,8 @@ fn main() {
 	
 	let contents = contents;
 	
+	// Idea: do this parallel?
+	// Buckets would have to be seperated and joined then.
 	for line in contents.lines() {
 		if line.is_empty() {continue;}
 		let line = bytearr_to_int64(line.as_bytes());

@@ -5,7 +5,7 @@ build:
 	cargo build --release
 
 makeinput:
-	clang++ makeinput.cpp -o makeinput -DNUM_LINES=100000000 # Creates roughly 770MB input
+	clang++ makeinput.cpp -o makeinput -DNUM_LINES=100000000 -O3 # Creates roughly 770MB input
 	./makeinput
 	rm makeinput
 run:
