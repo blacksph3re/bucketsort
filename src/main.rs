@@ -199,6 +199,7 @@ fn main() {
 
 			let mut file = pointer.lock().unwrap();
 			file.write(output.as_bytes()).expect("could not write to file");
+			if !LINEAR_DISTRIBUTION {file.flush().expect("could not write to file");}
 			let now = time::now();
 			if OUTPUT_TIMES {println!("Thread {} load: {} items (sort - {}, parse - {}, write - {})", i, threadbucket.len(), parsestart-sortstart, parseend-parsestart, now-writestart);}
 			
@@ -224,7 +225,7 @@ fn main() {
 		item.send(file.clone()).expect("send to thread failed");
 		resrx.recv().expect("receive from thread failed");
     }
-    
+    drop(file);
 	if OUTPUT_TIMES {println!("{} - Finished", time::now() - start);}
 	
 }
