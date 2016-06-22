@@ -230,17 +230,16 @@ fn main() {
 			if !LINEAR_DISTRIBUTION {file.flush().expect("could not write to file");}
 			let now = time::now();
 			if OUTPUT_TIMES {println!("Thread {} load: {} items (sort - {}, parse - {}, write - {})", i, threadbucket.len(), parsestart-sortstart, parseend-parsestart, now-writestart);}
-			
-			cloned_restx.send(()).expect("sending to main thread failed");
+			drop(file);
+			cloned_restx.send(()).expect("sending finish signal to main thread failed");
 		});
     }
     threads.reverse();
-	if OUTPUT_TIMES {println!("{} - Start gathering results", time::now() - start);}
-
-	// Make some space for threads
+	
+	// Free some memory
 	drop(contents);
 	drop(buckets);
-	
+
 	let path = Path::new(&output);
     let display = path.display();
 	// Open the path in read-only mode, returns `io::Result<File>`
@@ -252,11 +251,15 @@ fn main() {
 		Ok(file) => file,
     }));
     
+	if OUTPUT_TIMES {println!("{} - Start gathering results", time::now() - start);}
+
     // Gather results
     for item in &threads {
 		item.send(file.clone()).expect("send to thread failed");
 		resrx.recv().expect("receive from thread failed");
     }
+    
+    // Force file I/O to be finished before printing time
+    drop(file);
 	if OUTPUT_TIMES {println!("{} - Finished", time::now() - start);}
-	
 }
