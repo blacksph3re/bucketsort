@@ -144,6 +144,7 @@ fn main() {
 		panic!("could not read file: {}", Error::description(&why));
 	}
 	
+	drop(file);
 	
 	if OUTPUT_TIMES {println!("{} - Converting to u64", time::now() - start);}
 	let mut buckets  = vec![Vec::<u64>::new(); nthreads]; 
@@ -151,6 +152,7 @@ fn main() {
 	let startpos = contents.find('\n').unwrap();
 	let contents = unsafe {contents.as_mut_vec()};
 	let (_, contents) = contents.split_at(startpos+1);
+	// Encapsulate in scope so we can drop contents later
 	{
 		let lines : Vec<&[u8]> = contents.chunks(8).collect(); // assume 1 byte line endings
 		
@@ -237,6 +239,7 @@ fn main() {
 
 	// Make some space for threads
 	drop(contents);
+	drop(buckets);
 	
 	let path = Path::new(&output);
     let display = path.display();
